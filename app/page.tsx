@@ -38,7 +38,7 @@ const list: {href: string, title: string}[] = [
                 </div>
 
                 <h3 className='text-center'> 
-                    <a className='underline underline-offset-2' href="https://www.google.com/maps/place/2+Simpson+St,+Lagos+Island,+Lagos+102273,+Lagos/@6.4501,3.3991474,17z/data=!3m1!4b1!4m6!3m5!1s0x103b8b3d297725e9:0x1c541a25b990822a!8m2!3d6.4500947!4d3.4017223!16s%2Fg%2F11fx0s80j3?entry=ttu">
+                    <a className='underline underline-offset-2 text-black' href="https://www.google.com/maps/place/2+Simpson+St,+Lagos+Island,+Lagos+102273,+Lagos/@6.4501,3.3991474,17z/data=!3m1!4b1!4m6!3m5!1s0x103b8b3d297725e9:0x1c541a25b990822a!8m2!3d6.4500947!4d3.4017223!16s%2Fg%2F11fx0s80j3?entry=ttu">
                     2, Simpson Street, Opp High Court, Lagos Island, Lagos State</a> </h3>
             </div>
             </div>
