@@ -2,8 +2,8 @@ import React from 'react'
 
 import Image from "next/image";
 
-export default function HomPage({param}:{param: {slug: string}}) {
-
+export default function HomPage() {
+    
 
    const categoryItem = [
     {
@@ -17,22 +17,22 @@ export default function HomPage({param}:{param: {slug: string}}) {
         image: '/phone.jpg'
     },
     {
-        name: 'New Drink',
+        name: 'New Drink 1',
         price: '5,000',
         image: '/logo_sly.jpeg'
     },
     {
-        name: 'Ha New Drink',
+        name: 'Ha New Drink 2',
         price: '500,000',
         image: '/phone.jpg'
     },
     {
-        name: 'New Drink',
+        name: 'New Drink 3',
         price: '5,000',
         image: '/logo_sly.jpeg'
     },
     {
-        name: 'Ha New Drink',
+        name: 'Ha New Drink 4',
         price: '500,000',
         image: '/phone.jpg'
     }
@@ -44,7 +44,7 @@ export default function HomPage({param}:{param: {slug: string}}) {
         <section className='flex flex-row gap-4 flex-wrap justify-between lg:justify-start'>
             {categoryItem.map(({name, price, image}) =>  
             
-                <article className='basis-[44%] md:basis-[44%] lg:basis-[22%]'>
+                <article  key={name} className='basis-[44%] md:basis-[44%] lg:basis-[22%]'>
                     <div className=' bg-white flex place-items-center overflow-hidden object-contain'>
                         <Image
                             src={image}

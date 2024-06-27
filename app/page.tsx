@@ -45,7 +45,7 @@ const list: {href: string, title: string}[] = [
             <h1 className='font-bold text-center mb-5'>Choose from our Categories</h1>
             <ul className='leading-9'>
                 {
-                    list.map(({href, title}) => <li className='mb-2'><ListItem href={href} title={title}/></li> )
+                    list.map(({href, title}) => <li key={title.toLowerCase()} className='mb-2'><ListItem href={href} title={title}/></li> )
                 }
                 
             </ul>
