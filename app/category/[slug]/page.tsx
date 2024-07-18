@@ -41,10 +41,10 @@ export default function HomPage() {
 
   return (
     
-        <section className='flex flex-row gap-4 flex-wrap justify-between lg:justify-start'>
+        <section className='flex flex-row gap-y-10 gap-5 flex-wrap justify-between lg:justify-start'>
             {categoryItem.map(({name, price, image}) =>  
             
-                <article  key={name} className='basis-[44%] md:basis-[44%] lg:basis-[22%]'>
+                <article  key={name} className='basis-[44%] md:basis-[44%] lg:basis-[22%] cursor-pointer hover:scale-105 hover:shadow-lg rounded transition-transform'>
                     <div className=' bg-white flex place-items-center overflow-hidden object-contain'>
                         <Image
                             src={image}
