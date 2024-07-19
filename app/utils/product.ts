@@ -173,6 +173,6 @@ class SupabaseProduct {
 
 
 export const supabaseProduct = () => {
-    const supabaseInstance = new SupabaseProduct(process.env.NEXT_PUBLIC_VERCEL_PROJECT_URL!, process.env.NEXT_PUBLIC_VERCEL_SUPABASE_KEY!)
+    const supabaseInstance = new SupabaseProduct(process.env.NEXT_PUBLIC_VERCEL_URL!, process.env.NEXT_PUBLIC_VERCEL_ENV_SUPABASE_KEY!)
     return supabaseInstance;
 }
