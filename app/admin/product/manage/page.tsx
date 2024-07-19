@@ -2,9 +2,9 @@
 
 import React, { FormEvent, useEffect, useState } from 'react'
 import { Category, ProductInformation, ProductInformationUpdate, supabaseProduct } from '@/app/utils/product';
-import { clearForm, FormGroup, SelectionGroup } from '../add/page';
 import { isFileLessThan1MB } from '@/app/utils/imageOptimization';
 import Image from 'next/image';
+import { FormGroup, SelectionGroup } from '@/app/utils/components';
 
 export default function ManageProduct() {
  
@@ -174,7 +174,7 @@ const SingleProductPopUp = ({id, onClose}: {id: number, onClose: () => void}) =>
         if(categories) return setCategories(categories);
       }
 
-      const loadSingleProduct = async (id: number) => {
+      const loadSingleProduct = async () => {
         const {success, data, message} = await supabaseProduct().loadSingleProduct(id);
         if(success && data != null) setProductInformation(data)
         if(!success && message) setFormError(message)    
@@ -182,8 +182,8 @@ const SingleProductPopUp = ({id, onClose}: {id: number, onClose: () => void}) =>
 
       useEffect(() => {
         loadCategories();
-        loadSingleProduct(id);
-      }, []);
+        loadSingleProduct();
+      }, [productInformation]);
 
     return  (
         <div className='fixed top-10 bg-white p-2 rounded  translate-[-50%]  overflow-y-scroll h-[90vh] text-black'>

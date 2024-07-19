@@ -44,14 +44,14 @@ export default function HomPage({params}: {params: {
    ]
 
   async function getProductByCategory() {
-    const id = Number(params.slug.split('_')[0]);
+    const id = Number(params.slug.split('_')[0] ?? 0);
     const {success, otherInfo} = await supabaseProduct().getProductByCategory(id);
     if(success) setProductCatg(otherInfo);
   }
 
   useEffect(() => {
     getProductByCategory();
-  }, [])
+  }, [productCatg])
 
   return (
     
