@@ -10,9 +10,9 @@ export default function AdminPage() {
   return (
     
     <section className=''>
-        <Features name={"Add Product"} icon="add-prod.svg" route='/product/add'/>
-        <Features name={"Manage Product"} icon="products.svg" route='/product/manage'/>
-        <Features name={"Notification"} icon="notification.svg" route='/product/notification'/>
+        <Features name={"Add Product"} icon="add-prod.svg" route='admin/product/add'/>
+        <Features name={"Manage Product"} icon="products.svg" route='admin/product/manage'/>
+        <Features name={"Notification"} icon="notification.svg" route='admin/product/notification'/>
     </section>
     
   )

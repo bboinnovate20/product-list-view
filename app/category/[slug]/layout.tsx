@@ -13,13 +13,13 @@ export default function DashboardLayout({
                 <Image
                             src="/logo_sly.jpeg"
                             alt="Vercel Logo"
-                            className="dark:invert"
+                            className=""
                             width={50}
                             height={50}
                             priority
                         />
             </a>
-            <h1 className=" text-white text-center flex-grow font-bold text-lg">{params.slug.toUpperCase()} CATEGORIES</h1>   
+            <h1 className=" text-white text-center flex-grow font-bold text-lg">{params.slug.split('_')[1].toUpperCase()} CATEGORIES</h1>   
         </nav>
         <section className="px-4 max-w-[800px]">
             {children}

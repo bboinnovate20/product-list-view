@@ -8,7 +8,7 @@ import { SupabaseClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import React, { useState, FormEvent, useEffect } from 'react'
 
-const clearForm = (): ProductInformation => {
+export const clearForm = (): ProductInformation => {
   return {
     name: '',
     price: 0,
@@ -51,18 +51,19 @@ export default function AddProduct() {
   }
 
   const loadCategories = async () => {
+    
     const categories = await supabaseProduct().loadProductCategories()
     if(categories) return setCategories(categories);
   }
 
   useEffect(() => {
      loadCategories()
+     
   }, [])
 
   return (
     <div>
-      {formError && <div className='bg-red-500 text-white text-center py-2 mb-2'>{formError}</div>}
-      {formSuccess && <div className='bg-green-500 text-white text-center py-2 mb-2'>{formSuccess}</div>}
+      
       <h1 className='font-bold text-blue-700 text-center'>Add Product</h1>
       <form onSubmit={onSubmit}>
         <FormGroup label='Product Name' name='name' onChange={(data) => productInformation['name'] = data as string} />
@@ -85,7 +86,8 @@ export default function AddProduct() {
               productInformation['image_path'].file = data as FileList
             }
           }} />
-
+        {formError && <div className='bg-red-500 text-white text-center py-2 mb-2'>{formError}</div>}
+        {formSuccess && <div className='bg-green-500 text-white text-center py-2 mb-2'>{formSuccess}</div>}
         <button type='submit' className={`w-full bg-blue-600 p-3 rounded text-white ${isLoading && 'bg-gray-700'}`}>
           {isLoading ? "Adding Product" : "Add Product" }
         </button>
@@ -98,20 +100,21 @@ export default function AddProduct() {
 <input onChange={(e) => e.target.files}/>
 
 
-function SelectionGroup({label, name, data, onChange}: {label: string, name: string, 
-    onChange: (data: string | number) => void, data: Category[]}) {
+export function SelectionGroup({label, value, data, onChange}: {label: string, name: string, 
+    onChange: (data: string | number) => void, data: Category[], value?: number}) {
 
   return (
-    <div className='min-w-[400px] my-5'>
+    <div className='min-w-[400px] my-5 text-black'>
       <p className='text-sm'>{label}</p>
       <select  className='w-full outline-none border-[2px] border-blue-300 focus:border-blue-500 rounded p-2' 
+         defaultValue={value}  
       onChange={({currentTarget}) => onChange(currentTarget.value)}
       
       required>
-        <option value="">--Select Category---</option>
+        <option  value="">--Select Category---</option>
       {
-        data.map(({id, name}) => (
-            <option  key={id} value={id}>{name}</option>
+        data.map(({id, name}, index) => (
+            <option selected={value == id} key={index} value={id}>{name}</option>
          ))
       }
       </select>
@@ -120,20 +123,23 @@ function SelectionGroup({label, name, data, onChange}: {label: string, name: str
   )
 }
 
-function FormGroup({label, name, type, accept, onChange}: {
+export function FormGroup({label, name, type, value, required, accept, onChange}: {
   type?:string,
   accept?: string,
+  required?: boolean,
+  value?: string | number,
   label: string, name: string, onChange: (data: string | number | FileList | null) => void}) {
   return (
     <div className='min-w-[400px] my-5'>
       <p className='text-sm'>{label}</p>
       <input type={type ?? 'text'} name={name} accept={accept}
+      value={value}
        onChange={({currentTarget, target}) => {
         if(type == 'file')
             return onChange(target.files)
         return onChange(currentTarget.value)
       }}
-      className='w-full outline-none border-[2px] border-blue-300 focus:border-blue-500 rounded p-2' required/>
+      className='w-full outline-none border-[2px] border-blue-300 focus:border-blue-500 rounded p-2'  required={required ?? true}/>
 
     </div>
   )
