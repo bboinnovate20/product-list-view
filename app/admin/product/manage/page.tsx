@@ -91,7 +91,7 @@ function AllProduct({onClick}: {onClick: (arg: number) => void}) {
         <tbody className='p-2 text-black'>
             {
                filteredProduct && filteredProduct.map((item, index) => (
-                    <tr className={index % 2 == 0 ? 'bg-blue-200' : 'bg-white'}>
+                    <tr key={index} className={index % 2 == 0 ? 'bg-blue-200' : 'bg-white'}>
                         <td className='p-2'>{item.id}</td>
                         <td className='p-2'>{item.name}</td>
                         <td className='p-2'>{item.price}</td>
