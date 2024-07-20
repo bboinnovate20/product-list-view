@@ -79,7 +79,7 @@ function AllProduct({onClick}: {onClick: (arg: number) => void}) {
             }}
         />
     <table className='table-fixed w-full min-w-[500px]' border={100}>
-        <thead className='bg-blue-600 text-white'>
+        <thead className='bg-black text-white'>
             <tr className='text-left'>
                 <th className='p-2 w-[5%]'>ID</th>
                 <th className='p-2 w-[30%]'>Product Name</th>
@@ -92,7 +92,7 @@ function AllProduct({onClick}: {onClick: (arg: number) => void}) {
         <tbody className='p-2 text-black'>
             {
                filteredProduct && filteredProduct.map((item, index) => (
-                    <tr key={index} className={index % 2 == 0 ? 'bg-blue-200' : 'bg-white'}>
+                    <tr key={index} className={index % 2 == 0 ? 'bg-slate-500' : 'bg-white'}>
                         <td className='p-2'>{index+1}</td>
                         <td className='p-2 w-[40%]'>{item.name}</td>
                         <td className='p-2'>{currencyConvert(item.price)}</td>
@@ -196,7 +196,7 @@ const SingleProductPopUp = ({id, onClose}: {id: number, onClose: () => void}) =>
             
             <div>
             
-            <h1 className='font-bold text-blue-700 text-center'>Update Product</h1>
+            <h1 className='font-bold text-black text-center'>Update Product</h1>
         
         <form onSubmit={onSubmit}>
             <FormGroup label='Product Name' name='name' value={updatedInfo['name'] ?? productInformation['name']} 
@@ -250,7 +250,7 @@ const SingleProductPopUp = ({id, onClose}: {id: number, onClose: () => void}) =>
             <button className={`w-full bg-red-600 p-3 rounded text-white`} onClick={onClose}>
                     Close
                 </button>    
-                <button type='submit' className={`w-full bg-blue-600 p-3 rounded text-white ${isLoading && 'bg-gray-700'}`}>
+                <button type='submit' className={`w-full bg-black p-3 rounded text-white ${isLoading && 'bg-gray-700'}`}>
                     {isLoading ? "Updating Product" : "Update Product" }
                 </button>
             </div>

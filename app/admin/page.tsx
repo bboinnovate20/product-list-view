@@ -22,7 +22,7 @@ export default function AdminPage() {
 
 function Features({name, icon, route}: {name: string, icon: string,  route: string}) {
   return (
-      <a className='bg-blue-400 rounded-lg p-2 flex flex-col gap-4 place-items-center my-2 min-w-[200px] 
+      <a className='bg-black rounded-lg p-2 flex flex-col gap-4 place-items-center my-2 min-w-[200px] 
                     transition-transform hover:scale-105 cursor-pointer ' href={route}>
                 <Image
                                 src={icon}

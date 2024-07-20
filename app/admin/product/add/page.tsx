@@ -68,7 +68,7 @@ export default function AddProduct() {
   return (
     <div>
       
-      <h1 className='font-bold text-blue-700 text-center'>Add Product</h1>
+      <h1 className='font-bold text-black text-center'>Add Product</h1>
       <form onSubmit={onSubmit} className='text-black mb-10'>
         <FormGroup label='Product Name' value={productInformation['name']} name='name' onChange={(data) => {
           setProductInformation({...productInformation, name: data as string})}} />
@@ -106,7 +106,7 @@ export default function AddProduct() {
           }} />
         {formError && <div className='bg-red-500 text-white text-center py-2 mb-2'>{formError}</div>}
         {formSuccess && <div className='bg-green-500 text-white text-center py-2 mb-2'>{formSuccess}</div>}
-        <button type='submit' className={`w-full bg-blue-600 p-3 rounded text-white ${isLoading && 'bg-gray-700'}`}>
+        <button type='submit' className={`w-full bg-black p-3 rounded text-white ${isLoading && 'bg-gray-700'}`}>
           {isLoading ? "Adding Product" : "Add Product" }
         </button>
       </form>

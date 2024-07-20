@@ -8,7 +8,7 @@ export default function DashboardLayout({
   }) {
     return (
       <main className='flex flex-col min-h-screen place-items-center bg-white'>
-        <nav className="flex flex-row place-items-center bg-blue-950 w-full p-4 mb-8   ">
+        <nav className="flex flex-row place-items-center bg-black w-full p-4 mb-8   ">
             <a href="/">
                 <Image
                             src="/logo_sly.jpeg"
@@ -24,6 +24,14 @@ export default function DashboardLayout({
         <section className="px-4 max-w-[800px]">
         <div className="flex flex-col mb-10 justify-center place-items-center gap-3 text-black">
 
+            <Image
+                            src="/logo_sly.jpeg"
+                            alt="Vercel Logo"
+                            className=""
+                            width={180}
+                            height={100}
+                            priority
+                        />
 						<h3 className="text-center">
 							<a
 								className="underline underline-offset-2 text-black text-sm"

@@ -21,6 +21,7 @@ export default function HomPage() {
 	return (
 		<main className="flex min-h-[calc(100vh-90px)] flex-col justify-center place-items-center bg-white px-4">
 			<div className="max-w-[800px]">
+				
 				<div>
 					<div className="flex flex-col mb-5 justify-center place-items-center gap-3">
 						<div>
@@ -28,8 +29,8 @@ export default function HomPage() {
 								src="/logo_sly.jpeg"
 								alt="Vercel Logo"
 								className="filter saturate-100 contrast-200"
-								width={180}
-								height={120}
+								width={210}
+								height={150}
 								priority
 							/>
 						</div>
@@ -67,7 +68,7 @@ function ListItem({ href, title }: { href: string; title: string }) {
 	return (
 		<a
 			role="button"
-			className="animate-fade-in text-white w-full bg-gradient-to-r from-blue-500 to-blue-950 rounded-lg p-3 px-5 font-bold block"
+			className="animate-fade-in text-white w-full bg-gradient-to-r from-black to-gray-700 rounded-lg p-3 px-5 font-bold block"
 			href={href}
 		>
 			{title}
