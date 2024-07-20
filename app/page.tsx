@@ -19,7 +19,7 @@ export default function HomPage() {
 	}, []);
 
 	return (
-		<main className="flex min-h-[calc(100vh-110px)] flex-col justify-center place-items-center bg-white px-4">
+		<main className="flex min-h-[calc(100vh-90px)] flex-col justify-center place-items-center bg-white px-4">
 			<div className="max-w-[800px]">
 				<div>
 					<div className="flex flex-col mb-5 justify-center place-items-center gap-3">
@@ -28,8 +28,8 @@ export default function HomPage() {
 								src="/logo_sly.jpeg"
 								alt="Vercel Logo"
 								className="filter saturate-100 contrast-200"
-								width={150}
-								height={100}
+								width={180}
+								height={120}
 								priority
 							/>
 						</div>
@@ -40,7 +40,7 @@ export default function HomPage() {
 								href="https://www.google.com/maps/place/2+Simpson+St,+Lagos+Island,+Lagos+102273,+Lagos/@6.4501,3.3991474,17z/data=!3m1!4b1!4m6!3m5!1s0x103b8b3d297725e9:0x1c541a25b990822a!8m2!3d6.4500947!4d3.4017223!16s%2Fg%2F11fx0s80j3?entry=ttu"
 							>
 								2, Simpson Street, Opp High Court, Lagos Island, Lagos State
-							</a>{" "}
+							</a>
 						</h3>
 					</div>
 				</div>
