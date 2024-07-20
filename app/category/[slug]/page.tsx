@@ -33,6 +33,7 @@ export default function HomPage({params}: {params: {
   }
 
 
+
   useEffect(() => {
     getProductByCategory();
     getSubCategory();

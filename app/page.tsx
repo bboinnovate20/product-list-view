@@ -19,7 +19,7 @@ export default function HomPage() {
 	}, []);
 
 	return (
-		<main className="flex min-h-screen justify-center place-items-center bg-white px-4">
+		<main className="flex min-h-[calc(100vh-110px)] flex-col justify-center place-items-center bg-white px-4">
 			<div className="max-w-[800px]">
 				<div>
 					<div className="flex flex-col mb-5 justify-center place-items-center gap-3">

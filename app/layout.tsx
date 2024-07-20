@@ -16,7 +16,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div className=" pb-10">
+          {children}
+        </div>
+
+        <footer className="bg-black pb-6 pt-5 relative bottom-0 w-full h-[70px]">
+          <p className="text-white text-center ">© 2024 Sly Bar Night Club. All rights reserved.</p>
+        </footer>
+      </body>
+
     </html>
   );
 }

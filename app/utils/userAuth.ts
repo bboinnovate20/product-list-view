@@ -34,8 +34,10 @@ class User {
 }
 
 export const authUser = () => new User(
-    
+    // process.env.NEXT_PUBLIC_PROJECT_URL!, process.env.NEXT_PUBLIC_SUPABASE_KEY!
     process.env.NEXT_PUBLIC_VERCEL_URL!, process.env.NEXT_PUBLIC_VERCEL_ENV_SUPABASE_KEY!
 )
+
+
 
 // const supabaseInstance = new SupabaseProduct(process.env.NEXT_PUBLIC_VERCEL_URL!, process.env.NEXT_PUBLIC_VERCEL_ENV_SUPABASE_KEY!)
