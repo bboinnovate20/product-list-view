@@ -22,13 +22,13 @@ export default function HomPage() {
 		<main className="flex min-h-screen justify-center place-items-center bg-white px-4">
 			<div className="max-w-[800px]">
 				<div>
-					<div className="flex flex-col mb-10 justify-center place-items-center gap-3">
+					<div className="flex flex-col mb-5 justify-center place-items-center gap-3">
 						<div>
 							<Image
 								src="/logo_sly.jpeg"
 								alt="Vercel Logo"
-								className="dark:invert"
-								width={200}
+								className="filter saturate-100 contrast-200"
+								width={150}
 								height={100}
 								priority
 							/>
@@ -44,7 +44,7 @@ export default function HomPage() {
 						</h3>
 					</div>
 				</div>
-				<h1 className="font-bold text-center mb-5">
+				<h1 className="font-bold text-center mb-2 text-black">
 					Choose from our Categories
 				</h1>
 				<ul className="leading-9">

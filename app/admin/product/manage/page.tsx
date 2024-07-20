@@ -5,6 +5,7 @@ import { Category, ProductInformation, ProductInformationUpdate, supabaseProduct
 import { isFileLessThan1MB } from '@/app/utils/imageOptimization';
 import Image from 'next/image';
 import { FormGroup, SelectionGroup } from '@/app/utils/components';
+import { currencyConvert } from '@/app/utils/currency';
 
 export default function ManageProduct() {
  
@@ -14,7 +15,7 @@ export default function ManageProduct() {
 
   return (
     <div>
-        { <AllProduct onClick={(num) =>setId(13)} />}
+        { <AllProduct onClick={(num) =>setId(num)} />}
         {id != null && <SingleProductPopUp id={id} onClose={() => setId(null)} />} 
     </div>
   )
@@ -53,7 +54,7 @@ function AllProduct({onClick}: {onClick: (arg: number) => void}) {
     }
 
     function checkCategories (id: number) {
-        
+        console.log(id, category.filter((item) => item.id === id)[0]);
         // return category.filter((item) => item.id == id)[0].name;
         return category.filter((item) => item.id == id)[0]?.name ?? '';
     }
@@ -67,7 +68,7 @@ function AllProduct({onClick}: {onClick: (arg: number) => void}) {
     }, [])
 
   return (
-    <div className=' w-[500px]'>
+    <div className=' max-w-full overflow-x-scroll '>
     {/* <SingleProductPopUp id={13} onClose={() => console.log('dd')} /> */}
     <SelectionGroup
             label='Categories'
@@ -77,14 +78,14 @@ function AllProduct({onClick}: {onClick: (arg: number) => void}) {
                 filterProduct(data as number);
             }}
         />
-    <table className='table-fixed' border={100}>
+    <table className='table-fixed w-full min-w-[500px]' border={100}>
         <thead className='bg-blue-600 text-white'>
             <tr className='text-left'>
-                <th className='p-2'>ID</th>
-                <th className='w-[60%] p-2'>Product Name</th>
+                <th className='p-2 w-[5%]'>ID</th>
+                <th className='p-2 w-[30%]'>Product Name</th>
                 <th className='p-2'>Price</th>
                 <th className='p-2'>Categories</th>
-                <th className='p-2'>Action</th>
+                <th className='p-2 w-[30%]'>Action</th>
             </tr>
         </thead>
        
@@ -92,9 +93,9 @@ function AllProduct({onClick}: {onClick: (arg: number) => void}) {
             {
                filteredProduct && filteredProduct.map((item, index) => (
                     <tr key={index} className={index % 2 == 0 ? 'bg-blue-200' : 'bg-white'}>
-                        <td className='p-2'>{item.id}</td>
-                        <td className='p-2'>{item.name}</td>
-                        <td className='p-2'>{item.price}</td>
+                        <td className='p-2'>{index+1}</td>
+                        <td className='p-2 w-[40%]'>{item.name}</td>
+                        <td className='p-2'>{currencyConvert(item.price)}</td>
                         <td className='p-2'>{checkCategories(item.category)}</td>
                         <td>
                             <div>
@@ -176,6 +177,7 @@ const SingleProductPopUp = ({id, onClose}: {id: number, onClose: () => void}) =>
 
       const loadSingleProduct = async () => {
         const {success, data, message} = await supabaseProduct().loadSingleProduct(id);
+        console.log(data);
         if(success && data != null) setProductInformation(data)
         if(!success && message) setFormError(message)    
       }
@@ -186,7 +188,8 @@ const SingleProductPopUp = ({id, onClose}: {id: number, onClose: () => void}) =>
       }, [productInformation]);
 
     return  (
-        <div className='fixed top-10 bg-white p-2 rounded  translate-[-50%]  overflow-y-scroll h-[90vh] text-black'>
+        <div className='top-0 left-0 right-0 bottom-0 h-screen translate-0 fixed md:top-10 
+                    bg-white p-2 rounded  md:translate-[-50%] md:left-[50%] md:translate-x-[-50%] md:w-[500px]  overflow-y-scroll md:h-[90vh] text-black'>
             
         {
             productInformation == null ? <div className='place-items-center'>Loading</div>:
@@ -261,43 +264,3 @@ const SingleProductPopUp = ({id, onClose}: {id: number, onClose: () => void}) =>
     
 }
 
-
-
-const allProduct = (): ProductInformation[] => {
-    return [
-        {
-            id: 0,
-            name: 'New Product',
-            price: 2000,
-            description: 'New product to launch',
-            category: 1,
-            image_path: {
-                file: null,
-                path: 'new'
-            }   
-        },
-        {
-            id: 1,
-            name: 'New Product',
-            price: 2000,
-            description: 'New product to launch',
-            category: 1,
-            image_path: {
-                file: null,
-                path: 'new'
-            }   
-        },
-        {
-            id: 2,
-            name: 'New Product',
-            price: 2000,
-            description: 'New product to launch',
-            category: 1,
-            image_path: {
-                file: null,
-                path: 'new'
-            }   
-        }
-
-    ]
-}

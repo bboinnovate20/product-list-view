@@ -5,7 +5,8 @@ export const clearForm = (): ProductInformation => {
       name: '',
       price: 0,
       description: '',
-      category: 0,
+      subcategory: null,
+      category: -1,
       image_path: {file: null, path: ''}
     }
   };

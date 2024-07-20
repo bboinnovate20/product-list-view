@@ -15,6 +15,7 @@ export default function AddProduct() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isCompleted, setIsCompleted] = useState<boolean>(false)
   const [categories, setCategories] = useState<Category[]>([{}]);
+  const [SCategories, SetSCategories] = useState<Category[]>([]);
   const [formError, setFormError] = useState("");
   const [formSuccess, setFormSuccess] = useState("");
  
@@ -23,52 +24,76 @@ export default function AddProduct() {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    
+      
     setFormError('');
     setFormSuccess('');
 
     setIsLoading(true)
-
+    
     const uploadProduct = await supabaseProduct().addProduct(productInformation);
 
     if(uploadProduct[0]) {
-      setFormSuccess('Successfully uploaded to Product')
       setProductInformation(clearForm());
+      setFormSuccess('Successfully uploaded to Product')
     }
     else {
       setFormError(uploadProduct[1]);
     }
-
+    
     setIsLoading(false);
     
   }
 
+  const loadSubCategories = async (categoryId: number) => {
+    const {success, otherInfo} = await supabaseProduct().getSubCategory(categoryId);
+    if(success) SetSCategories(otherInfo);
+
+  }
   const loadCategories = async () => {
     
     const categories = await supabaseProduct().loadProductCategories()
+   
     if(categories) return setCategories(categories);
+  }
+  async function isSubCategory(id: number) {
+    const {success, otherInfo} = await supabaseProduct().loadSingleCategory(id);
+    if(success && otherInfo) return otherInfo['isWithSubCategory'];
   }
 
   useEffect(() => {
      loadCategories()
      
-  }, [])
+  }, [productInformation])
 
   return (
     <div>
       
       <h1 className='font-bold text-blue-700 text-center'>Add Product</h1>
-      <form onSubmit={onSubmit}>
-        <FormGroup label='Product Name' name='name' onChange={(data) => productInformation['name'] = data as string} />
-        <FormGroup label='Product Price' type={'number'} name='price' onChange={(data) => productInformation['price'] = data as number} />
+      <form onSubmit={onSubmit} className='text-black mb-10'>
+        <FormGroup label='Product Name' value={productInformation['name']} name='name' onChange={(data) => {
+          setProductInformation({...productInformation, name: data as string})}} />
+        <FormGroup label='Product Price' value={productInformation['price']} type={'number'} name='price' 
+          onChange={(data) => setProductInformation({...productInformation, price: data as number})} />
         
         <SelectionGroup label='Category' 
           data={categories} name='category' 
-          onChange={(data) => productInformation['category'] = data as number} />
-
-        <FormGroup label='Description' name='description' onChange={(data) => productInformation['description'] = data as string} />
+          value={productInformation['category']}
+          onChange={(data) => {
+            setProductInformation({...productInformation, category: data as number})
+            loadSubCategories(data as number);
+          }} />
         
+       {SCategories.length >= 1 && <SelectionGroup label='Sub Category' 
+          data={SCategories} name='subcategory' 
+          value={productInformation['subcategory'] ?? -1}
+          onChange={(data) => setProductInformation({...productInformation, subcategory: data as number})} />}
+
+        <FormGroup label='Description' name='description' 
+          value={productInformation['description']}
+          onChange={(data) => setProductInformation({...productInformation, description: data as string})} />
+
         <FormGroup label='Image Upload' type='file' accept='image/*' name='image' 
+          // value={productInformation['image_path']['path']}
           onChange={(data) => {
             if(data != null) {
               if(isFileLessThan1MB(data as FileList) == false){
@@ -76,7 +101,7 @@ export default function AddProduct() {
                 return;
               }
               setFormError('');
-              productInformation['image_path'].file = data as FileList
+              setProductInformation({...productInformation, image_path: {file: data as FileList, path: (data as FileList)[0].name} })
             }
           }} />
         {formError && <div className='bg-red-500 text-white text-center py-2 mb-2'>{formError}</div>}

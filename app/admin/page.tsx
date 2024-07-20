@@ -1,6 +1,9 @@
-import React, {createContext} from 'react'
+"use client";
+import React, {createContext, useEffect, useState} from 'react'
 
 import Image from "next/image";
+import { FormGroup } from '../utils/components';
+import { useRouter } from 'next/navigation';
 
 
 
@@ -8,13 +11,11 @@ export default function AdminPage() {
   
 
   return (
-    
     <section className=''>
         <Features name={"Add Product"} icon="add-prod.svg" route='admin/product/add'/>
         <Features name={"Manage Product"} icon="products.svg" route='admin/product/manage'/>
         <Features name={"Notification"} icon="notification.svg" route='admin/product/notification'/>
     </section>
-    
   )
 }
 

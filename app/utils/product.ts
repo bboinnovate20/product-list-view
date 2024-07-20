@@ -4,13 +4,14 @@ import { PRODUCT_PATH } from "./constant";
 import { url } from "inspector";
 
 
-export interface Response  {success: boolean, message?: string, data?: ProductInformation, otherInfo?: any}
+export interface ResponseData  {success: boolean, message?: string, data?: ProductInformation, otherInfo?: any}
 export interface ProductInformation {
     id?: number,
     name: string,
     price: number,
     description: string,
     category: number,
+    subcategory: number | null,
     image_path: {file: FileList | null, path: string, updatedPath?: string}
 }
 
@@ -24,7 +25,8 @@ export interface ProductInformationUpdate {
 
 export interface Category {
     id?: number,
-    name?: string
+    name?: string,
+    isWithSubCategory?: boolean,
   }
   
 
@@ -52,9 +54,11 @@ class SupabaseProduct {
                         productInformation.image_path.file!);
       
             if(serverImageUpload[0]) {
-                const info = productInformation;
+                let info = productInformation;
+                
                 info.image_path.path =  serverImageUpload[1];
-                const response = await this.addProductToServer(info);
+
+                const response = await this.addProductToServer({...info});
                 if(response[0]) {
                     return [true, response[1]]
                 }
@@ -67,7 +71,7 @@ class SupabaseProduct {
         return [false, null]
     }
 
-    async updateProduct(productInfo: ProductInformationUpdate, id: number): Promise<Response> {
+    async updateProduct(productInfo: ProductInformationUpdate, id: number): Promise<ResponseData> {
         const{data, error} = await this.supabaseClient.from('product').update(productInfo).eq('id', id);
 
         if(error) return {success: false, message: error.message};
@@ -78,8 +82,8 @@ class SupabaseProduct {
 
     }
 
-    async allProduct(): Promise<Response>{
-        const {data, error} = await this.supabaseClient.from('product').select('*');
+    async allProduct(): Promise<ResponseData>{
+        const {data, error} = await this.supabaseClient.from('product').select('*').order('category');
 
         if(error) return {success: false, message: error.message}
 
@@ -88,7 +92,7 @@ class SupabaseProduct {
 
     
 
-    async loadSingleProduct(id: number) : Promise<Response> {
+    async loadSingleProduct(id: number) : Promise<ResponseData> {
         const {error, data} = await this.supabaseClient.from('product').select('*').eq('id', id).limit(1);
 
         if(error) return {success: false, message: error.message}
@@ -100,6 +104,7 @@ class SupabaseProduct {
                 price: data[0].price,
                 description: data[0].description,
                 category: data[0].category,
+                subcategory: data[0].subcategory,
                 image_path: {
                     file: null,
                     path: data[0].image_path
@@ -112,7 +117,7 @@ class SupabaseProduct {
         
     }
 
-    async   replacePath (prevPath: string, replacedPath: File): Promise<Response> {
+    async   replacePath (prevPath: string, replacedPath: File): Promise<ResponseData> {
 
         const{data, error} = await this.supabaseClient.storage.from('products_path').update(prevPath, replacedPath)
         
@@ -132,7 +137,7 @@ class SupabaseProduct {
             upsert: false
           });
         
-        if(error) [false, error.message]
+        if(error) return [false, error.message]
         
         return [true, data?.path];
   }
@@ -151,10 +156,16 @@ class SupabaseProduct {
         return [false, null]
   } 
   getProductURL(path: string) {
-    console.log(path);
+    
     return this.supabaseClient.storage.from('products_path').getPublicUrl(path).data.publicUrl;
   }
 
+  async getSubCategory(CategoryId: number): Promise<ResponseData> {
+    const {data, error} = await this.supabaseClient.from('product_sub_categories').select('id, name').eq('category', CategoryId);
+    
+    if(error) return {success: false};
+    return {success: true, otherInfo: data as Category[]}
+  }
 
 
   async loadProductCategories(): Promise<Category[] | null> {
@@ -163,7 +174,15 @@ class SupabaseProduct {
     return data as Category[]
   }
 
-  async getProductByCategory(id: number): Promise<Response> {
+  async loadSingleCategory(id: number) {
+    const {data, error} = await this.supabaseClient.from('product_categories').select('name, id,isWithSubCategory').eq('id', id).limit(1);
+    if(!error) return {success: true, otherInfo: data[0] as Category}
+    return {success: false}
+  }
+
+  
+
+  async getProductByCategory(id: number): Promise<ResponseData> {
     const {data, error} = await this.supabaseClient.from('product').select('*').eq('category', id);
     if(error) return {success: false}
     return {success: true, otherInfo: data as ProductInformation[]}
@@ -173,6 +192,8 @@ class SupabaseProduct {
 
 
 export const supabaseProduct = () => {
-    const supabaseInstance = new SupabaseProduct(process.env.NEXT_PUBLIC_VERCEL_URL!, process.env.NEXT_PUBLIC_VERCEL_ENV_SUPABASE_KEY!)
+   
+    const supabaseInstance = new SupabaseProduct(process.env.NEXT_PUBLIC_PROJECT_URL!, process.env.NEXT_PUBLIC_SUPABASE_KEY!)
+    // const supabaseInstance = new SupabaseProduct(process.env.NEXT_PUBLIC_VERCEL_URL!, process.env.NEXT_PUBLIC_VERCEL_ENV_SUPABASE_KEY!)
     return supabaseInstance;
 }

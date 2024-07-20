@@ -1,20 +1,20 @@
-"use client";
 import Image from "next/image";
-import { authUser } from "../utils/userAuth";
+import { useEffect } from "react";
 import { redirect } from 'next/navigation'
-import { useRouter } from 'next/navigation';
+import { authUser } from "../utils/userAuth";
 
 export default function DashboardLayout({
     children
   }: {
     children: React.ReactNode,
   }) {
-    const router = useRouter();
 
-    async function logoutUser() {
-      await authUser().logoutUser();
-      router.replace('/login')  
+    async function checkIfUserExist () {
+      const userExist = await authUser().getUserData();
+  
+      if(userExist) redirect('/admin');
     }
+    checkIfUserExist();
 
     return (
       
@@ -30,12 +30,9 @@ export default function DashboardLayout({
                             priority
                         />
             </a>
-            <h1 className=" text-white text-center flex-grow font-bold text-lg"> ADMIN SECTION </h1>  
-            <button type='submit' className={` bg-blue-600 p-3 rounded text-white`} onClick={() => logoutUser()}>
-            Logout
-          </button>
+            <h1 className=" text-white text-center flex-grow font-bold text-lg"> ADMIN SECTION </h1>   
         </nav>
-        <section className="w-[90vw] lg:max-w-[800px]">
+        <section className="px-4 max-w-[800px] text-black">
             {children}
         </section>
       </main>

@@ -6,14 +6,14 @@ export function SelectionGroup({label, value, data, onChange}: {label: string, n
 
   return (
     <>
-      <div className='min-w-[400px] my-5 text-black'>
+      <div className='w-full my-5 text-black'>
         <p className='text-sm'>{label}</p>
         <select  className='w-full outline-none border-[2px] border-blue-300 focus:border-blue-500 rounded p-2' 
           defaultValue={value}  
         onChange={({currentTarget}) => onChange(currentTarget.value)}
         
         required>
-          <option  value="">--Select Category---</option>
+          <option  value={-1}>{`--Select ${label}---`}</option>
         {
           data.map(({id, name}, index) => (
               <option selected={value == id} key={index} value={id}>{name}</option>
@@ -33,7 +33,7 @@ export function FormGroup({label, name, type, value, required, accept, onChange}
     value?: string | number,
     label: string, name: string, onChange: (data: string | number | FileList | null) => void}) {
     return (
-      <div className='min-w-[400px] my-5'>
+      <div className='w-[100%] my-5'>
         <p className='text-sm'>{label}</p>
         <input type={type ?? 'text'} name={name} accept={accept}
         value={value}
