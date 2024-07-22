@@ -15,17 +15,18 @@ export default function ManageProduct() {
 
   return (
     <div>
-        { <AllProduct onClick={(num) =>setId(num)} />}
+        { <AllProduct onDelete={(num) => setId(num)} onEdit={(num) =>setId(num)} />}
         {id != null && <SingleProductPopUp id={id} onClose={() => setId(null)} />} 
     </div>
   )
 }
 
 
-function AllProduct({onClick}: {onClick: (arg: number) => void}) {
+function AllProduct({onEdit, onDelete}: {onEdit: (arg: number) => void, onDelete: (arg: number) => void }) {
     const [product, setProduct] = useState<ProductInformation[]>([])
     const [filteredProduct, setFilteredProduct] = useState<ProductInformation[]>([])
     const [category, setCategories] = useState<Category[]>([]);
+    const [deleteId, setDeleteId] = useState<number>(-1);
 
     const loadProduct = async () => {
         const {success, otherInfo} = await supabaseProduct().allProduct();
@@ -39,9 +40,17 @@ function AllProduct({onClick}: {onClick: (arg: number) => void}) {
 
     }
 
-    function filterProduct(id: number) {
+    function filterProduct(id: number | string) {
         if(id) {
-            const newFiltered = product.filter((item) => item.category == id);
+            let newFiltered;
+            if(typeof id == 'number'){
+                newFiltered = product.filter((item) => item.category == id);
+            }
+            else {
+                
+                newFiltered = product.filter((item) => item.name.toLowerCase().includes(id.toLowerCase()));
+                
+            }
             setFilteredProduct(newFiltered);
         }
         else {
@@ -54,11 +63,21 @@ function AllProduct({onClick}: {onClick: (arg: number) => void}) {
     }
 
     function checkCategories (id: number) {
-        console.log(id, category.filter((item) => item.id === id)[0]);
+        
         // return category.filter((item) => item.id == id)[0].name;
         return category.filter((item) => item.id == id)[0]?.name ?? '';
     }
+    
+    async function deleteProduct(id: number) {
+        if(id < 0) return;
+        setDeleteId(id);
+        const {success} = await supabaseProduct().deleteProduct(id);
+        if(success) {
+            loadProduct();
+        }
+        return setDeleteId(-1)
 
+    }
 
     useEffect(() => {
         loadCategories()
@@ -70,6 +89,7 @@ function AllProduct({onClick}: {onClick: (arg: number) => void}) {
   return (
     <div className=' max-w-full overflow-x-scroll '>
     {/* <SingleProductPopUp id={13} onClose={() => console.log('dd')} /> */}
+    <FormGroup label='Search Product' name='search' onChange={(data) => {filterProduct(data as string)}}/>
     <SelectionGroup
             label='Categories'
             data={category}
@@ -78,6 +98,7 @@ function AllProduct({onClick}: {onClick: (arg: number) => void}) {
                 filterProduct(data as number);
             }}
         />
+    
     <table className='table-fixed w-full min-w-[500px]' border={100}>
         <thead className='bg-black text-white'>
             <tr className='text-left'>
@@ -102,8 +123,8 @@ function AllProduct({onClick}: {onClick: (arg: number) => void}) {
                                 <table>
                                 <tbody>
                                     <tr>
-                                        <td className='px-2 text-white rounded bg-green-500'><button onClick={() => onClick(item.id ?? -1)} >Edit</button></td>
-                                        <td className='p-2 text-red-500'><button>Delete</button></td>
+                                        <td className='px-2 text-white rounded bg-green-500'><button onClick={() => onEdit(item.id ?? -1)} >Edit</button></td>
+                                        <td className='p-2 text-red-500'><button disabled={deleteId >= 0} onClick={() => deleteProduct(item.id ?? -1)}>{item.id === deleteId ? "Deleting": "Delete"}</button></td>
                                     </tr>
                                 </tbody>
 
@@ -148,6 +169,7 @@ const SingleProductPopUp = ({id, onClose}: {id: number, onClose: () => void}) =>
                 const id = productInformation.id?.toString() ?? '0';
                 const {success, message, otherInfo} = 
                     await supabaseProduct().replacePath(productInformation.image_path.path, updatedInfo.image_path.file[0]);
+                    
                 
                 if(success) {
                     newUpdatedInfo['image_path'] = otherInfo;
@@ -177,7 +199,6 @@ const SingleProductPopUp = ({id, onClose}: {id: number, onClose: () => void}) =>
 
       const loadSingleProduct = async () => {
         const {success, data, message} = await supabaseProduct().loadSingleProduct(id);
-        console.log(data);
         if(success && data != null) setProductInformation(data)
         if(!success && message) setFormError(message)    
       }

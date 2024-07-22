@@ -33,8 +33,8 @@ export function FormGroup({label, name, type, value, required, accept, onChange}
     value?: string | number,
     label: string, name: string, onChange: (data: string | number | FileList | null) => void}) {
     return (
-      <div className='w-[100%] my-5'>
-        <p className='text-sm'>{label}</p>
+      <div className='w-[100%] my-5 tet-black'>
+        <p className='text-sm text-black' >{label}</p>
         <input type={type ?? 'text'} name={name} accept={accept}
         value={value}
          onChange={({currentTarget, target}) => {
@@ -42,7 +42,7 @@ export function FormGroup({label, name, type, value, required, accept, onChange}
               return onChange(target.files)
           return onChange(currentTarget.value)
         }}
-        className='w-full outline-none border-[2px] border-blue-300 focus:border-blue-500 rounded p-2'  required={required ?? true}/>
+        className='w-full text-black outline-none border-[2px] border-blue-300 focus:border-blue-500 rounded p-2'  required={required ?? true}/>
   
       </div>
     )

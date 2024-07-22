@@ -78,8 +78,19 @@ class SupabaseProduct {
         return {success: true}
     }
 
-    deleteProduct() {
+    async deleteProduct(productId: number): Promise<ResponseData> {
+        const product = await this.loadSingleProduct(productId);
+        if(product.success) {
+            const image_path = product.data?.image_path.path;
+            const {data, error} = await this.supabaseClient.from('product').delete().eq('id', product.data?.id);
+            if(!error && image_path) {
+                const {error: err} = await this.supabaseClient.storage.from('products_paths').remove([image_path]);
+                if(!err) return {success: true, message: "Successfully deleted"};
+                return {success: false}
+            }
 
+        }
+        return {success: false};
     }
 
     async allProduct(): Promise<ResponseData>{
@@ -118,13 +129,15 @@ class SupabaseProduct {
     }
 
     async   replacePath (prevPath: string, replacedPath: File): Promise<ResponseData> {
-
+        console.log(prevPath);
         const{data, error} = await this.supabaseClient.storage.from('products_path').update(prevPath, replacedPath)
         
         if(error) return {success: false, message: error.message}
         return {success: true, otherInfo: data?.path}
 
     }
+
+    
     uploadImageToServer = async (name: string, file: FileList): Promise<any[]> => {
         
         if(file[0] == null) return [false, null];

@@ -23,8 +23,8 @@ export default function AddProduct() {
 
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-      
+    event.preventDefault()  
+    const target = event.currentTarget;
     setFormError('');
     setFormSuccess('');
 
@@ -33,6 +33,7 @@ export default function AddProduct() {
     const uploadProduct = await supabaseProduct().addProduct(productInformation);
 
     if(uploadProduct[0]) {
+      target.reset();
       setProductInformation(clearForm());
       setFormSuccess('Successfully uploaded to Product')
     }
